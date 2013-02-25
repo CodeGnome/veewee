@@ -1,6 +1,6 @@
 .encoding = "UTF-8"
 config.version = "8"
-virtualHW.version = "7"
+virtualHW.version = <%= virtualhw_version %>
 numvcpus = "<%= cpu_count %>"
 scsi0.present = "TRUE"
 scsi0.virtualDev = "<%= controller_type %>"
@@ -82,3 +82,10 @@ ethernet0.displayName = "Ethernet"
 sound.startConnected = "FALSE"
 RemoteDisplay.vnc.enabled = "TRUE"
 RemoteDisplay.vnc.port = "<%= vnc_port %>"
+<% if enable_hypervisor_support == true %>vhv.enable = "TRUE"<% end %>
+<% if fusion_version.start_with?('5.') %>bios.bootOrder = "hdd,CDROM"<% end %>
+<% unless vmdk_file.nil? %>
+scsi0:2.present = "TRUE"
+scsi0:2.fileName = "<%= vmdk_file %>"
+scsi0:2.redo = ""
+<% end %>
